@@ -41,7 +41,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDAmwgr_5C9mig-74JC7Yfi4hzrthgJqW0',
+    apiKey: '',
     appId: '1:458475264666:web:7f606fe6e38a0ea4fa5d23',
     messagingSenderId: '458475264666',
     projectId: 'ecoflow-fc41c',
@@ -50,7 +50,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA3nLIS3eSNzKETP-qequS61D3h3x68ld0',
+    apiKey: '',
     appId: '1:458475264666:android:c45ac7e1a3a15c1ffa5d23',
     messagingSenderId: '458475264666',
     projectId: 'ecoflow-fc41c',
@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDRW27al2LZ6_iGVe1sqX0EMMuHqfa0Uos',
+    apiKey: '',
     appId: '1:458475264666:ios:f8628d9c63b2ae9ffa5d23',
     messagingSenderId: '458475264666',
     projectId: 'ecoflow-fc41c',
@@ -67,7 +67,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDRW27al2LZ6_iGVe1sqX0EMMuHqfa0Uos',
+    apiKey: '',
     appId: '1:458475264666:ios:f8628d9c63b2ae9ffa5d23',
     messagingSenderId: '458475264666',
     projectId: 'ecoflow-fc41c',
@@ -76,7 +76,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDAmwgr_5C9mig-74JC7Yfi4hzrthgJqW0',
+    apiKey: '',
     appId: '1:458475264666:web:edda6ad3175d6021fa5d23',
     messagingSenderId: '458475264666',
     projectId: 'ecoflow-fc41c',
