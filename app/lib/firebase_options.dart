@@ -42,45 +42,45 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: '',
-    appId: '1:458475264666:web:7f606fe6e38a0ea4fa5d23',
-    messagingSenderId: '458475264666',
-    projectId: 'ecoflow-fc41c',
-    authDomain: 'ecoflow-fc41c.firebaseapp.com',
-    storageBucket: 'ecoflow-fc41c.firebasestorage.app',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+    authDomain: '',
+    storageBucket: '',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: '',
-    appId: '1:458475264666:android:c45ac7e1a3a15c1ffa5d23',
-    messagingSenderId: '458475264666',
-    projectId: 'ecoflow-fc41c',
-    storageBucket: 'ecoflow-fc41c.firebasestorage.app',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+    storageBucket: '',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: '',
-    appId: '1:458475264666:ios:f8628d9c63b2ae9ffa5d23',
-    messagingSenderId: '458475264666',
-    projectId: 'ecoflow-fc41c',
-    storageBucket: 'ecoflow-fc41c.firebasestorage.app',
-    iosBundleId: 'com.example.ecoflowapp',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+    storageBucket: '',
+    iosBundleId: '',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: '',
-    appId: '1:458475264666:ios:f8628d9c63b2ae9ffa5d23',
-    messagingSenderId: '458475264666',
-    projectId: 'ecoflow-fc41c',
-    storageBucket: 'ecoflow-fc41c.firebasestorage.app',
-    iosBundleId: 'com.example.ecoflowapp',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+    storageBucket: '',
+    iosBundleId: '',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: '',
-    appId: '1:458475264666:web:edda6ad3175d6021fa5d23',
-    messagingSenderId: '458475264666',
-    projectId: 'ecoflow-fc41c',
-    authDomain: 'ecoflow-fc41c.firebaseapp.com',
-    storageBucket: 'ecoflow-fc41c.firebasestorage.app',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+    authDomain: '',
+    storageBucket: '',
   );
 }
