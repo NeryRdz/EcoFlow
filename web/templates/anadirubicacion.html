@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Añadir Ubicación - Ecoflow</title>
+    <link rel="icon" type="image/png" href="static/images/Logo.ico">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #11ad1e;
+            --primary-dark: #05571a;
+            --primary-light: #46d334;
+            --secondary: #3bf6b8;
+            --accent: #f5d20b;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --gray: #6b7280;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e8f5e8 100%);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Botón Volver */
+        .btn-volver {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(17, 173, 30, 0.3);
+            z-index: 100;
+        }
+
+        .btn-volver:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(17, 173, 30, 0.4);
+        }
+
+        /* Panel del Formulario */
+        .form-panel {
+            width: 450px;
+            background: white;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(17, 173, 30, 0.1);
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-subtitle {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Grupos de Formulario */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(17, 173, 30, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Radio Buttons Mejorados */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        .radio-option:hover {
+            border-color: var(--primary);
+            background: rgba(17, 173, 30, 0.05);
+        }
+
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+            color: var(--dark);
+            width: 100%;
+        }
+
+        .radio-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .radio-custom::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        input[type="radio"]:checked + .radio-label .radio-custom {
+            border-color: var(--primary);
+        }
+
+        input[type="radio"]:checked + .radio-label .radio-custom::after {
+            opacity: 1;
+        }
+
+        input[type="radio"]:checked + .radio-label {
+            color: var(--primary);
+        }
+
+        /* Coordenadas */
+        .coordenadas-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .coordenada-group {
+            position: relative;
+        }
+
+        .coordenada-group input {
+            padding-left: 2.5rem;
+        }
+
+        .coordenada-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        /* Botón de Envío */
+        .btn-submit {
+            width: 100%;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            box-shadow: 0 4px 15px rgba(17, 173, 30, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(17, 173, 30, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* Mapa */
+        .map-container {
+            flex: 1;
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .map-instructions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .map-instructions h3 {
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .map-instructions p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Mensajes Flash */
+        .flash-messages {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            max-width: 400px;
+        }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: slideInRight 0.3s ease-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert-success {
+            background: rgba(17, 173, 30, 0.1);
+            color: var(--primary-dark);
+            border: 1px solid var(--primary);
+        }
+
+        .alert-error {
+            background: rgba(220, 53, 69, 0.1);
+            color: #721c24;
+            border: 1px solid #dc3545;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+
+        /* Tablets */
+        @media (max-width: 1024px) {
+            .form-panel {
+                width: 400px;
+            }
+            
+            .map-instructions {
+                max-width: 250px;
+            }
+        }
+
+        /* Móviles grandes */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .btn-volver {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin: 1rem;
+                width: calc(100% - 2rem);
+                justify-content: center;
+            }
+            
+            .form-panel {
+                width: 100%;
+                height: auto;
+                max-height: 60vh;
+                overflow-y: auto;
+                padding: 1rem;
+            }
+            
+            .map-container {
+                height: 40vh;
+                width: 100%;
+                flex: auto;
+            }
+            
+            .map-instructions {
+                position: relative;
+                top: 0;
+                right: 0;
+                max-width: 100%;
+                margin: 1rem;
+            }
+            
+            .form-header {
+                margin-bottom: 1.5rem;
+            }
+            
+            .form-title {
+                font-size: 1.7rem;
+            }
+            
+            .coordenadas-container {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Móviles pequeños */
+        @media (max-width: 480px) {
+            .form-panel {
+                padding: 0.5rem;
+                max-height: 50vh;
+            }
+            
+            .form-header {
+                padding: 0 0.5rem;
+            }
+            
+            .form-title {
+                font-size: 1.5rem;
+            }
+            
+            .form-subtitle {
+                font-size: 0.8rem;
+            }
+            
+            .form-group {
+                margin-bottom: 1rem;
+            }
+            
+            .form-group input,
+            .form-group textarea,
+            .form-group select {
+                /*padding: 0.6rem 0.8rem;*/
+                font-size: 0.9rem;
+            }
+            
+            .radio-option {
+                padding: 0.6rem 0.8rem;
+            }
+            
+            .radio-label {
+                font-size: 0.9rem;
+            }
+            
+            .btn-submit {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .map-container {
+                height: 50vh;
+                flex: auto;
+            }
+            
+            .map-instructions {
+                margin: 0.5rem;
+                padding: 0.8rem;
+            }
+            
+            .map-instructions h3 {
+                font-size: 0.9rem;
+            }
+            
+            .map-instructions p {
+                font-size: 0.8rem;
+            }
+            
+            .flash-messages {
+                position: relative;
+                top: 0;
+                right: 0;
+                max-width: 100%;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="{{ url_for('index') }}" class="btn-volver">
+        <i class="fas fa-arrow-left"></i> Volver al Inicio
+    </a>
+
+    <!-- Mensajes Flash -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <i class="fas fa-{% if category == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Panel del Formulario -->
+    <div class="form-panel">
+        <div class="form-header">
+            <h1 class="form-title">Añadir Ubicación</h1>
+            <p class="form-subtitle">Registra tu punto de reciclaje en el mapa</p>
+        </div>
+
+        <form method="post" id="modalform" enctype="multipart/form-data">
+            <!-- Nombre del Negocio -->
+            <div class="form-group">
+                <label for="NombreNegocio">
+                    <i class="fas fa-store"></i>Nombre de tu Negocio
+                </label>
+                <input type="text" id="NombreNegocio" name="NombreNegocio" required placeholder="Ej: Reciclajes Verdes S.A.">
+            </div>
+
+            <!-- Imagen del Negocio -->
+            <div class="form-group">
+                <label for="imagenNegocio">
+                    <i class="fas fa-store"></i>Imagen de tu negocio (Opcional)
+                </label>
+                <input type="file" id="imagenNegocio" name="imagenNegocio" accept="image/*" >
+            </div>
+
+            <!-- Descripción -->
+            <div class="form-group">
+                <label for="DescripcionBreve">
+                    <i class="fas fa-file-alt"></i>Descripción breve
+                </label>
+                <textarea id="DescripcionBreve" name="DescripcionBreve" required placeholder="Describe brevemente tu negocio y servicios..."></textarea>
+            </div>
+
+            <!-- Materiales Reciclables -->
+            <div class="form-group">
+                <label for="MaterialesReciclables">
+                    <i class="fas fa-recycle"></i>Materiales reciclables
+                </label>
+                <textarea id="MaterialesReciclables" name="MaterialesReciclables" required placeholder="Lista los materiales que aceptas para reciclaje..."></textarea>
+            </div>
+
+            <!-- Tipo de Negocio -->
+            <div class="form-group">
+                <label>
+                    <i class="fas fa-tag"></i>Tipo de negocio
+                </label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="tipo-empresa" name="Tipo" value="Empresa" required>
+                        <label for="tipo-empresa" class="radio-label">
+                            <span class="radio-custom"></span>
+                            <i class="fas fa-building"></i>
+                            Empresa
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="tipo-emprendimiento" name="Tipo" value="Emprendimiento" required>
+                        <label for="tipo-emprendimiento" class="radio-label">
+                            <span class="radio-custom"></span>
+                            <i class="fas fa-lightbulb"></i>
+                            Emprendimiento
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="tipo-personal" name="Tipo" value="Personal" required>
+                        <label for="tipo-personal" class="radio-label">
+                            <span class="radio-custom"></span>
+                            <i class="fas fa-user"></i>
+                            Personal
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coordenadas -->
+            <div class="form-group">
+                <label>
+                    <i class="fas fa-map-marker-alt"></i>Coordenadas
+                </label>
+                <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 0.5rem;">
+                    Haz clic en el mapa para seleccionar la ubicación
+                </p>
+                <div class="coordenadas-container">
+                    <div class="coordenada-group">
+                        <i class="fas fa-xmark coordenada-icon"></i>
+                        <input type="text" id="inputX" name="x" pattern="^-?\d*(\.\d+)?$" required placeholder="Latitud" readonly>
+                    </div>
+                    <div class="coordenada-group">
+                        <i class="fas fa-yin-yang coordenada-icon"></i>
+                        <input type="text" id="inputY" name="y" pattern="^-?\d*(\.\d+)?$" required placeholder="Longitud" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón de Envío -->
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-save"></i> Guardar Ubicación
+            </button>
+        </form>
+    </div>
+
+    <!-- Mapa -->
+    <div class="map-container">
+        <div class="map-instructions">
+            <h3><i class="fas fa-info-circle"></i> Instrucciones</h3>
+            <p>Haz clic en cualquier lugar del mapa para seleccionar las coordenadas de tu ubicación.</p>
+        </div>
+        <div id="map"></div>
+    </div>
+
+    <script>
+        // Inicialización del mapa
+        var map = L.map('map', {
+            center: [21.88, -102.30],
+            zoom: 14,
+            worldCopyJump: true
+        });
+
+        // Capa de mosaicos de OpenStreetMap
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        // Límites del mundo
+        var southWest = L.latLng(-85, -180);
+        var northEast = L.latLng(85, 180);
+        var bounds = L.latLngBounds(southWest, northEast);
+        map.setMaxBounds(bounds);
+
+        // Control de escala
+        L.control.scale().addTo(map);
+
+        // Elementos de entrada para coordenadas
+        const inputX = document.getElementById('inputX');
+        const inputY = document.getElementById('inputY');
+
+        // Marcador temporal
+        let tempMarker = null;
+
+        // Escuchar clics en el mapa
+        map.on('click', function (e) {
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
+
+            // Actualizar campos de coordenadas
+            inputX.value = lat.toFixed(6);
+            inputY.value = lng.toFixed(6);
+
+            // Eliminar marcador anterior si existe
+            if (tempMarker) {
+                map.removeLayer(tempMarker);
+            }
+
+            // Crear nuevo marcador temporal
+            tempMarker = L.marker([lat, lng], {
+                icon: L.icon({
+                    iconSize: [30, 50],
+                    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+                    popupAnchor: [0, -10]
+                })
+            }).addTo(map);
+
+            // Popup informativo
+            tempMarker.bindPopup(`
+                <div style="text-align: center;">
+                    <strong>Ubicación Seleccionada</strong><br>
+                    Lat: ${lat.toFixed(6)}<br>
+                    Lng: ${lng.toFixed(6)}
+                </div>
+            `).openPopup();
+        });
+
+        // Validación del formulario antes de enviar
+        document.getElementById('modalform').addEventListener('submit', function(e) {
+            if (!inputX.value || !inputY.value) {
+                e.preventDefault();
+                alert('Por favor, selecciona una ubicación en el mapa haciendo clic en él.');
+                return false;
+            }
+        });
+
+        // Prevenir arrastre fuera de los límites
+        map.on('drag', function () {
+            map.panInsideBounds(bounds, { animate: false });
+        });
+    </script>
+</body>
+</html>

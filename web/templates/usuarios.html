@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - Ecoflow</title>
+    <link rel="icon" type="image/png" href="static/images/Logo.ico">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #11ad1e;
+            --primary-dark: #05571a;
+            --primary-light: #46d334;
+            --secondary: #3bf6b8;
+            --accent: #f5d20b;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --gray: #6b7280;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e8f5e8 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .btn-volver {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(17, 173, 30, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .btn-volver:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(17, 173, 30, 0.4);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        h1 {
+            color: var(--dark);
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-agregar {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(17, 173, 30, 0.3);
+        }
+
+        .btn-agregar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(17, 173, 30, 0.4);
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(17, 173, 30, 0.08);
+            overflow: hidden;
+            overflow-x: auto;
+            margin-bottom: 2rem;
+            overflow-wrap: break-word;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+
+        
+        th {
+            background: var(--gradient);
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background-color: rgba(17, 173, 30, 0.05);
+        }
+
+        .btn-accion {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+
+        .btn-accion:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(17, 173, 30, 0.3);
+        }
+
+        .btn-eliminar {
+            background: #dc3545;
+        }
+
+        .btn-eliminar:hover {
+            background: #c82333;
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-admin {
+            background: rgba(245, 210, 11, 0.2);
+            color: #856404;
+            border: 1px solid var(--accent);
+        }
+
+        .badge-usuario {
+            background: rgba(17, 173, 30, 0.2);
+            color: var(--primary-dark);
+            border: 1px solid var(--primary);
+        }
+
+        /* Modal para agregar usuario */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 1% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: var(--dark);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            /*margin-bottom: 0.5rem;*/
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(17, 173, 30, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            box-shadow: 0 4px 15px rgba(17, 173, 30, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(17, 173, 30, 0.4);
+        }
+
+        /* Mensajes Flash */
+        .flash-messages {
+            margin-bottom: 2rem;
+        }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .alert-success {
+            background: rgba(17, 173, 30, 0.1);
+            color: var(--primary-dark);
+            border: 1px solid var(--primary);
+        }
+
+        .alert-error {
+            background: rgba(220, 53, 69, 0.1);
+            color: #721c24;
+            border: 1px solid #dc3545;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-section{
+            display: flex;
+            align-items: flex-end;
+            text-align: left;
+            font-family: sans-serif;
+            font-size: 20px;
+            flex-direction: column;
+        }
+        .search-section input{
+            border-radius: 10px;
+            width: 240px;
+            height: 30px;
+            font-size: 16px;
+            padding-left: 3px;
+            margin: 5px 0 20px 0;
+        }
+
+        /* Tablets */
+        @media (max-width: 1024px) {
+            .table-container {
+                overflow-x: auto;
+            }
+            table {
+                min-width: 900px;
+            }
+            .modal-content {
+                margin: 5% auto;
+            }
+        }
+
+        /* Móviles grandes */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .btn-agregar {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            table {
+                font-size: 0.9rem;
+            }
+            
+            th, td {
+                padding: 0.75rem 0.5rem;
+            }
+            
+            .btn-accion {
+                display: block;
+                width: 100%;
+                margin-bottom: 0.5rem;
+                text-align: center;
+                margin-right: 0;
+            }
+            
+            .search-section {
+                align-items: flex-start;
+                width: 100%;
+            }
+            
+            .search-section input {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+                padding: 1.5rem;
+            }
+        }
+
+        /* Móviles pequeños */
+        @media (max-width: 480px) {
+            body {
+                padding: 0.5rem;
+            }
+            
+            .table-container {
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.7rem;
+            }
+            
+            table {
+                min-width: 1000px;
+                font-size: 0.8rem;
+            }
+            
+            th, td {
+                padding: 0.5rem 0.3rem;
+            }
+            
+            .badge {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.5rem;
+            }
+            
+            .form-group label {
+                font-size: 0.9rem;
+            }
+            
+            .form-group input,
+            .form-group select {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.9rem;
+            }
+            
+            .btn-submit {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .close {
+                right: 1rem;
+                top: 1rem;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="{{ url_for('admin') }}" class="btn-volver">
+        <i class="fas fa-arrow-left"></i> Volver al Panel
+    </a>
+
+    <!-- Mensajes Flash -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <i class="fas fa-{% if category == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="header-container">
+        <h1>Gestión de Usuarios</h1>
+        <button class="btn-agregar" onclick="abrirModal()">
+            <i class="fas fa-user-plus"></i> Agregar Usuario
+        </button>
+    </div>
+    <div class="search-section">
+        <label for="buscador">Buscador</label>
+        <input type="text" name="buscar" id="buscar" placeholder="Correo, Nombre, Telefono, Rol">
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Correo</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in usuarios %}
+                <tr>
+                    <td>{{ u.iduser }}</td>
+                    <td>{{ u.correo_electronico }}</td>
+                    <td>{{ u.nombre_completo }}</td>
+                    <td>{{ u.telefono }}</td>
+                    <td>
+                        <span class="badge {% if u.rol == 'admin' %}badge-admin{% else %}badge-usuario{% endif %}">
+                            {{ u.rol }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('editar_usuario', id=u.iduser) }}" class="btn-accion">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a href="{{ url_for('eliminar_usuario', id=u.iduser) }}" 
+                        class="btn-accion btn-eliminar" 
+                        onclick="return confirm('¿Seguro que deseas eliminar este usuario?');">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal para agregar usuario -->
+    <div id="modalAgregar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <h2 style="margin-bottom: 1.5rem; color: var(--dark);">Agregar Nuevo Usuario</h2>
+            
+            <form method="POST" action="{{ url_for('agregar_usuario') }}">
+                <div class="form-group">
+                    <label for="correo">Correo Electrónico</label>
+                    <input type="email" id="correo" name="correo" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contrasena">Contraseña</label>
+                    <input type="password" id="contrasena" name="contrasena" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="rol">Rol</label>
+                    <select id="rol" name="rol" required>
+                        <option value="usuario">Usuario</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-save"></i> Guardar Usuario
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Funciones para el modal
+        function abrirModal() {
+            document.getElementById('modalAgregar').style.display = 'block';
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalAgregar').style.display = 'none';
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('modalAgregar');
+            if (event.target === modal) {
+                cerrarModal();
+            }
+        }
+
+        // Efectos hover para las filas de la tabla
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(5px)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            
+            row.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+        //Para las busquedas
+        document.getElementById('buscar').addEventListener('input', function(e) {
+            const valor = e.target.value;
+            
+            if (valor.length >= 2) {
+                fetch('/BuscarUsuarios', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({buscar: valor})
+                })
+                .then(response => response.text())
+                .then(html => {
+                    // Reemplazar solo el contenido de tbody
+                    document.querySelector('tbody').innerHTML = html;
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
+            }
+            else if (valor.length === 0) {
+                // Si está vacío, mostrar TODOS los datos
+                window.location.href = '{{ url_for("usuarios") }}';
+            }
+        });
+    </script>
+</body>
+</html>

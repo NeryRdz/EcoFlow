@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Economía Circular - Ecoflow</title>
+    
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/Logo.ico') }}">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #11ad1e;
+            --primary-dark: #05571a;
+            --primary-light: #46d334;
+            --secondary: #3bf6b8;
+            --accent: #f5d20b;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --gray: #6b7280;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-light: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            --gradient-soft: linear-gradient(135deg, #e8f5e8, #d1f7e8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e8f5e8 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(17, 173, 30, 0.15);
+            border-bottom: 2px solid rgba(17, 173, 30, 0.2);
+        }
+
+        .navdiv {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-img {
+            height: 100px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo a {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.3rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+        }
+
+        .nav-links li a {
+            color: var(--dark);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+            text-decoration: none;
+        }
+
+        .nav-links li a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links li a:hover::after {
+            width: 100%;
+        }
+
+        .botones-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(17, 173, 30, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(17, 173, 30, 0.4);
+            background: var(--gradient-light);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(17, 173, 30, 0.3);
+        }
+
+        /* Hero Section Educativa */
+        .hero-educacion {
+            margin-top: 80px;
+            padding: 6rem 2rem;
+            text-align: center;
+            background: var(--gradient-soft);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-educacion::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(17, 173, 30, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(59, 246, 184, 0.1) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-educacion h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-educacion p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        /* Secciones Educativas */
+        .section-educativa {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .section-title .underline {
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        /* Timeline Interactivo */
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 4rem auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background: var(--gradient);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-content {
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(17, 173, 30, 0.1);
+            border: 2px solid rgba(17, 173, 30, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(17, 173, 30, 0.2);
+            border-color: var(--primary-light);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background: white;
+            border: 3px solid var(--primary);
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            border-radius: 3px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            left: -10px;
+            background: white;
+            border: 3px solid var(--primary);
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            border-radius: 3px;
+        }
+
+        .timeline-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Tarjetas Interactivas */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(17, 173, 30, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(17, 173, 30, 0.1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(17, 173, 30, 0.15);
+            border-color: var(--primary-light);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .card p {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        /* Estadísticas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(17, 173, 30, 0.08);
+            border: 2px solid rgba(17, 173, 30, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* Footer Mejorado */
+        .footer {
+            background: linear-gradient(135deg, var(--dark) 0%, #0f172a 100%);
+            color: white;
+            padding: 4rem 2rem 2rem;
+            border-top: 4px solid var(--primary);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-logo i {
+            color: var(--primary-light);
+        }
+
+        .footer-links h3,
+        .footer-contact h3,
+        .footer-social h3 {
+            color: var(--primary-light);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-light);
+        }
+
+        .footer-contact p {
+            color: #d1d5db;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-contact i {
+            color: var(--primary-light);
+            width: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+
+            .hero-educacion h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-educacion {
+                padding: 4rem 1rem;
+            }
+            
+            .section-educativa {
+                padding: 3rem 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navdiv">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Ecoflow Logo" class="logo-img">
+            </div>
+            
+            <div class="botones-nav">
+                
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">
+                        Volver
+                    </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section Educativa -->
+    <section class="hero-educacion">
+        <div class="hero-content fade-in">
+            <h1>Economía Circular: El Futuro Sostenible</h1>
+            <p>Descubre cómo transformar residuos en recursos y construir un mundo más verde y próspero para las futuras generaciones</p>
+        </div>
+    </section>
+
+    <!-- Sección: ¿Qué es la Economía Circular? -->
+    <section class="section-educativa">
+        <div class="section-title">
+            <h2>¿Qué es la Economía Circular?</h2>
+            <div class="underline"></div>
+        </div>
+        
+        <div class="card-grid">
+            <div class="card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <h3>Ciclo Continuo</h3>
+                <p>Un sistema regenerativo donde los materiales se mantienen en uso el mayor tiempo posible, eliminando el concepto de "residuo" y creando un ciclo infinito de valor.</p>
+            </div>
+            
+            <div class="card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <h3>Diseño Inteligente</h3>
+                <p>Productos diseñados desde el inicio para ser desmontados, reparados y reciclados, facilitando su reincorporación al ciclo productivo y reduciendo el desperdicio.</p>
+            </div>
+            
+            <div class="card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3>Colaboración Global</h3>
+                <p>Un modelo basado en la cooperación entre empresas, gobiernos y ciudadanos para crear sistemas de intercambio y reutilización que beneficien a toda la comunidad.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección: Problema Actual -->
+    <section class="section-educativa" style="background: var(--gradient-soft);">
+        <div class="section-title">
+            <h2>El Problema: Economía Lineal</h2>
+            <div class="underline"></div>
+            <p style="color: var(--gray); max-width: 800px; margin: 0 auto;">Nuestro sistema actual de "usar y tirar" está agotando los recursos naturales y generando cantidades alarmantes de residuos</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card fade-in">
+                <div class="stat-number">44</div>
+                <div class="stat-label">Millones de toneladas de residuos anuales en México</div>
+                <small style="color: var(--gray); display: block; margin-top: 0.5rem; font-size: 0.8rem;">Entre 42-44 millones de toneladas</small>
+            </div>
+            
+            <div class="stat-card fade-in">
+                <div class="stat-number">9.6</div>
+                <div class="stat-label">Porcentaje de reciclaje actual</div>
+                <small style="color: var(--gray); display: block; margin-top: 0.5rem; font-size: 0.8rem;">Solo 9.6-14% se recicla adecuadamente</small>
+            </div>
+            
+            <div class="stat-card fade-in">
+                <div class="stat-number">824</div>
+                <div class="stat-label">Toneladas de basura diarias</div>
+                <small style="color: var(--gray); display: block; margin-top: 0.5rem; font-size: 0.8rem;">Solo en Aguascalientes</small>
+            </div>
+            
+            <div class="stat-card fade-in">
+                <div class="stat-number">50</div>
+                <div class="stat-label">Porcentaje de materia orgánica</div>
+                <small style="color: var(--gray); display: block; margin-top: 0.5rem; font-size: 0.8rem;">Podría convertirse en composta</small>
+            </div>
+        </div>
+    </section>
+
+        <!-- Sección: Estudio Científico - Investigación Cinvestav -->
+    <section class="section-educativa">
+        <div class="section-title">
+            <h2>Estudio Científico: Transformando Residuos en Oportunidades</h2>
+            <div class="underline"></div>
+            <p style="color: var(--gray); max-width: 800px; margin: 0 auto;">
+                Investigación del Cinvestav Saltillo revela el potencial de los residuos urbanos para la economía circular
+            </p>
+        </div>
+
+        <div class="card" style="max-width: 1000px; margin: 0 auto;">
+            <div class="card-icon" style="margin: 0 auto 2rem auto;">
+                <i class="fas fa-flask"></i>
+            </div>
+            <h3 style="text-align: center; color: var(--primary); margin-bottom: 2rem;">
+                Análisis de Residuos Sólidos Urbanos en Saltillo
+            </h3>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                <div class="stat-card" style="text-align: center;">
+                    <div class="stat-number">17.02%</div>
+                    <div class="stat-label">Plásticos en residuos domiciliarios</div>
+                </div>
+                <div class="stat-card" style="text-align: center;">
+                    <div class="stat-number">16.51%</div>
+                    <div class="stat-label">Papel y cartón recuperable</div>
+                </div>
+                <div class="stat-card" style="text-align: center;">
+                    <div class="stat-number">22.15%</div>
+                    <div class="stat-label">Materia orgánica doméstica</div>
+                </div>
+            </div>
+
+            <div style="background: var(--gradient-soft); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+                <h4 style="color: var(--primary-dark); margin-bottom: 1rem;">
+                    🔬 Composición de Residuos Domiciliarios
+                </h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                    <div>
+                        <strong>Plásticos:</strong> 17.02%
+                    </div>
+                    <div>
+                        <strong>Papel y cartón:</strong> 16.51%
+                    </div>
+                    <div>
+                        <strong>Orgánicos domésticos:</strong> 22.15%
+                    </div>
+                    <div>
+                        <strong>Vidrio:</strong> 3.12%
+                    </div>
+                    <div>
+                        <strong>Metales:</strong> 1.63%
+                    </div>
+                    <div>
+                        <strong>Residuos especiales:</strong> 11.85%
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                <div>
+                    <h4 style="color: var(--primary-dark); margin-bottom: 1rem;">🌱 Composición de la Fracción Orgánica</h4>
+                    <ul style="color: var(--gray); line-height: 1.7;">
+                        <li><strong>Carbono:</strong> 44.7%</li>
+                        <li><strong>Oxígeno:</strong> 32.5%</li>
+                        <li><strong>Hidrógeno:</strong> 6%</li>
+                        <li><strong>Carbohidratos:</strong> 70.98%</li>
+                        <li><strong>Proteínas:</strong> 16.74%</li>
+                        <li><strong>Grasas y lípidos:</strong> 12.27%</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: var(--primary-dark); margin-bottom: 1rem;">⚡ Potencial de Bioproductos</h4>
+                    <ul style="color: var(--gray); line-height: 1.7;">
+                        <li>Generación de biocombustibles</li>
+                        <li>Producción de fertilizantes</li>
+                        <li>Elaboración de enzimas</li>
+                        <li>Biohidrógeno y biometano</li>
+                        <li>Composta de alta calidad</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #e8f4fd; padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--primary);">
+                <h4 style="color: var(--primary-dark); margin-bottom: 0.5rem;">💡 Hallazgo Principal</h4>
+                <p style="color: var(--dark); margin: 0;">
+                    "Gran parte de los residuos podría ser revalorizada para la producción de bioproductos, 
+                    lo que impulsaría la economía circular en la región, al maximizar el uso de los recursos 
+                    y reducir el descarte de residuos."
+                </p>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(17, 173, 30, 0.2);">
+                <p style="color: var(--gray); font-size: 0.9rem;">
+                    <strong>Fuente:</strong> Investigación del Cinvestav Saltillo dirigida por el Dr. Rodolfo Daniel Silva Martínez<br>
+                    <a href="https://conexion.cinvestav.mx/academia/Exposiciones/residuos-urbanos-191un-problema-ambiental-o-una-oportunidad-de-transformaci243n" 
+                       target="_blank" 
+                       style="color: var(--primary); text-decoration: none;">
+                       <i class="fas fa-external-link-alt"></i> Ver estudio completo
+                    </a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección: Proceso de Economía Circular -->
+    <section class="section-educativa">
+        <div class="section-title">
+            <h2>El Camino hacia la Circularidad</h2>
+            <div class="underline"></div>
+        </div>
+        
+        <div class="timeline">
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Diseño Circular</h3>
+                    <p>Productos diseñados para ser duraderos, reparables, actualizables y reciclables desde su concepción, considerando todo su ciclo de vida.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Producción Responsable</h3>
+                    <p>Uso eficiente de recursos renovables, energía limpia en los procesos de manufactura y minimización de residuos desde la fabricación.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3>Consumo Consciente</h3>
+                    <p>Elección de productos sostenibles, preferencia por servicios en lugar de posesión, y extensión de la vida útil mediante mantenimiento.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-recycle"></i>
+                    </div>
+                    <h3>Recolección y Clasificación</h3>
+                    <p>Sistemas eficientes para separar, limpar y preparar materiales para su reutilización, reparación o reciclaje de alta calidad.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-infinity"></i>
+                    </div>
+                    <h3>Regeneración</h3>
+                    <p>Los materiales vuelven al ciclo productivo como recursos valiosos, cerrando el círculo y reduciendo la extracción de nuevas materias primas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección: Beneficios -->
+    <section class="section-educativa" style="background: var(--gradient-soft);">
+        <div class="section-title">
+            <h2>Beneficios de la Economía Circular</h2>
+            <div class="underline"></div>
+        </div>
+        
+        <div class="card-grid">
+            <div class="card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-tree"></i>
+                </div>
+                <h3>Ambientales</h3>
+                <ul style="color: var(--gray); line-height: 1.7; padding-left: 1rem;">
+                    <li>Reducción de residuos en vertederos</li>
+                    <li>Conservación de recursos naturales</li>
+                    <li>Disminución de emisiones de CO₂</li>
+                    <li>Protección de la biodiversidad</li>
+                    <li>Menor contaminación del agua y suelo</li>
+                </ul>
+            </div>
+            
+            <div class="card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Económicos</h3>
+                <ul style="color: var(--gray); line-height: 1.7; padding-left: 1rem;">
+                    <li>Ahorro en costos de materiales</li>
+                    <li>Creación de empleos verdes</li>
+                    <li>Innovación y competitividad</li>
+                    <li>Reducción de dependencia de importaciones</li>
+                    <li>Nuevas oportunidades de negocio</li>
+                </ul>
+            </div>
+            
+            <div class="card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Sociales</h3>
+                <ul style="color: var(--gray); line-height: 1.7; padding-left: 1rem;">
+                    <li>Mejora de la salud pública</li>
+                    <li>Fortalecimiento comunitario</li>
+                    <li>Acceso a productos más económicos</li>
+                    <li>Educación ambiental</li>
+                    <li>Mayor calidad de vida</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección: Cómo Participar -->
+    <section class="section-educativa">
+        <div class="section-title">
+            <h2>¿Cómo Puedes Participar?</h2>
+            <div class="underline"></div>
+        </div>
+        
+        <div class="card-grid">
+            <div class="card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Registra tu Negocio</h3>
+                <p>Añade tu empresa o emprendimiento al mapa de Ecoflow y comparte los materiales que puedes ofrecer o necesitar para crear sinergias circulares.</p>
+                {% if session.loggedIn %}
+                <a href="{{ url_for('anadirubicacion') }}" class="btn btn-primary" style="margin-top: 1rem;">
+                    <i class="fas fa-plus"></i> Añadir Ubicación
+                </a>
+                {% else %}
+                <a href="{{ url_for('registro') }}" class="btn btn-primary" style="margin-top: 1rem;">
+                    <i class="fas fa-user-plus"></i> Regístrate
+                </a>
+                {% endif %}
+            </div>
+            
+            <div class="card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Encuentra Recursos</h3>
+                <p>Utiliza nuestro mapa interactivo para descubrir materiales, servicios y oportunidades de economía circular cerca de tu ubicación.</p>
+                <a href="{{ url_for('index') }}#mapa" class="btn btn-outline" style="margin-top: 1rem;">
+                    <i class="fas fa-map"></i> Explorar Mapa
+                </a>
+            </div>
+            
+            <div class="card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                <h3>Comparte el Conocimiento</h3>
+                <p>Difunde la importancia de la economía circular y ayuda a crear una comunidad consciente y activa por un futuro sostenible.</p>
+                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                    <a href="https://www.facebook.com/profile.php?id=61582626029597" target="_blank" class="btn btn-outline" style="padding: 0.5rem;">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://x.com/EcoFlow96379" target="_blank" class="btn btn-outline" style="padding: 0.5rem;">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.instagram.com/ecoflow084/" target="_blank" class="btn btn-outline" style="padding: 0.5rem;">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Mejorado -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <div class="footer-logo">
+                    <i class="fas fa-leaf"></i> Ecoflow
+                </div>
+                <p style="color: #d1d5db; margin-bottom: 1rem; line-height: 1.6;">
+                    Conectando sostenibilidad, creando futuro. Juntos transformamos residuos en recursos 
+                    y construimos una comunidad circular en Aguascalientes.
+                </p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61582626029597" target="_blank" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://x.com/EcoFlow96379" target="_blank" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    </a>
+                    <a href="https://www.instagram.com/ecoflow084/" target="_blank" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Enlaces Rápidos</h3>
+                <ul>
+                    <li><a href="{{ url_for('index') }}#inicio"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="{{ url_for('index') }}#nosotros"><i class="fas fa-users"></i> ¿Quiénes Somos?</a></li>
+                    <li><a href="{{ url_for('index') }}#recursos"><i class="fas fa-recycle"></i> Recursos</a></li>
+                    <li><a href="{{ url_for('index') }}#mapa"><i class="fas fa-map"></i> Mapa Interactivo</a></li>
+                    <li><a href="{{ url_for('aprender_mas') }}"><i class="fas fa-graduation-cap"></i> Para Aprender Más</a></li>
+                    <li><a href="{{ url_for('index') }}#acerca"><i class="fas fa-info-circle"></i> Acerca De</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Para Usuarios</h3>
+                <ul>
+                    {% if session.loggedIn %}
+                    <li><a href="{{ url_for('MostrarMarcador') }}"><i class="fas fa-map-marker-alt"></i> Mis Marcadores</a></li>
+                    <li><a href="{{ url_for('anadirubicacion') }}"><i class="fas fa-plus-circle"></i> Añadir Ubicación</a></li>
+                    {% if session.es_admin %}
+                    <li><a href="{{ url_for('admin') }}"><i class="fas fa-cog"></i> Panel Administrador</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</a></li>
+                    <li><a href="{{ url_for('registro') }}"><i class="fas fa-user-plus"></i> Registrarse</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            
+            <div class="footer-contact">
+                <h3>Contacto</h3>
+                <p><i class="fas fa-envelope"></i> ecoflow084@gmail.com</p>
+                <p><i class="fas fa-phone"></i> 449 123 4567</p>
+                <p><i class="fas fa-map-marker-alt"></i> Av Perseo 301, Aguascalientes, Ags.</p>
+                <p><i class="fas fa-clock"></i> Soporte: Lun - Vie 9:00 - 18:00</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Ecoflow. Todos los derechos reservados. 
+               <span style="color: var(--primary-light);">♻️ Hecho con amor por el planeta</span> | 
+               <a href="#" style="color: #9ca3af; text-decoration: none;">Política de Privacidad</a> | 
+               <a href="#" style="color: #9ca3af; text-decoration: none;">Términos de Servicio</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Animación de scroll para elementos
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card, .stat-card, .timeline-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Efecto hover mejorado para tarjetas
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Contadores animados para estadísticas
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 20);
+        }
+
+        // Iniciar contadores cuando sean visibles
+        const statObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumber = entry.target.querySelector('.stat-number');
+                    const target = parseInt(statNumber.textContent);
+                    animateCounter(statNumber, target);
+                    statObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-card').forEach(card => {
+            statObserver.observe(card);
+        });
+
+        // Smooth scroll para navegación interna
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

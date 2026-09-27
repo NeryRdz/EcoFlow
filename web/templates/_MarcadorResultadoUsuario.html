@@ -1,0 +1,86 @@
+{% for marcador in resultadoMarcadores %}
+    {% if marcador.idmarker %}
+        <!-- Determinar icono según el tipo -->
+        {% set icono = '' %}
+        {% if marcador.tipo == 'Empresa' %}
+            {% set icono = 'fas fa-building' %}
+        {% elif marcador.tipo == 'Emprendimiento' %}
+            {% set icono = 'fas fa-lightbulb' %}
+        {% else %}
+            {% set icono = 'fas fa-user' %}
+        {% endif %}
+
+        <div class="marcador-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="{{ icono }}"></i>
+                </div>
+                <div class="card-title">
+                    <h3>{{ marcador.nombreNegocio }}</h3>
+                    <span class="card-badge">{{ marcador.tipo }}</span>
+                </div>
+            </div>
+
+            <div class="card-body">
+                {% if marcador.imagenNegocio %}
+                <div class="info-section">
+                    <h4><i class="{{ icono }}"></i> Imagen del negocio</h4>
+                    <img src="/static/{{ marcador.imagenNegocio }}" 
+                        style="max-width: 300px; max-height: 200px; width: auto; height: auto; object-fit: contain;">
+                </div>
+                {% endif %}
+
+                <!-- Descripción -->
+                <div class="info-section">
+                    <h4><i class="fas fa-file-alt"></i> Descripción</h4>
+                    <p>{{ marcador.descripcionBreve }}</p>
+                </div>
+
+                <!-- Materiales -->
+                <div class="info-section">
+                    <h4><i class="fas fa-recycle"></i> Materiales Aceptados</h4>
+                    <p>{{ marcador.materialesReciclables }}</p>
+                </div>
+
+                <!-- Información de Contacto -->
+                <div class="info-section">
+                    <h4><i class="fas fa-address-card"></i> Información de Contacto</h4>
+                    <div class="info-item">
+                        <i class="fas fa-user"></i>
+                        <span>{{ marcador.nombre_completo }}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>{{ marcador.correo_electronico }}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <span>{{ marcador.telefono }}</span>
+                    </div>
+                </div>
+
+                <!-- Ubicación -->
+                <div class="info-section">
+                    <h4><i class="fas fa-map-marker-alt"></i> Ubicación</h4>
+                    <div class="info-item">
+                        <i class="fas fa-location-crosshairs"></i>
+                        <span>Lat: {{ "%.6f"|format(marcador.x) }}, Lng: {{ "%.6f"|format(marcador.y) }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <a href="{{ url_for('editar_marcador_usuario', id=marcador.idmarker) }}"
+                    class="btn-action"
+                    onclick="return confirm('¿Quiere modificar?');">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+                <a href="{{ url_for('eliminar_marcador_usuario', id=marcador.idmarker) }}"
+                    class="btn-eliminar"
+                    onclick="return confirm('¿Estás seguro de eliminar este marcador?');">
+                    <i class="fas fa-trash-alt"></i> Eliminar
+                </a>
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}

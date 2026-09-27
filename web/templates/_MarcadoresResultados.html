@@ -1,0 +1,32 @@
+{% for m in resultadosMarcadores %}
+<tr>
+    <td>{{ m.idmarker }}</td>
+    <td><strong>{{ m.nombreNegocio }}</strong></td>
+    {% if m.imagenNegocio %}
+    <td><img src="static/{{m.imagenNegocio}}" style="max-width: 180; max-height: 80px; width: auto; height: auto; object-fit: contain;"></td>
+    {% else %}
+    <td><strong>No</strong></td>
+    {% endif %}
+    <td class="descripcion-corta" title="{{ m.descripcionBreve }}">{{ m.descripcionBreve }}</td>
+    <td class="descripcion-corta" title="{{ m.materialesReciclables }}">{{ m.materialesReciclables }}</td>
+    <td>
+        <span class="badge 
+                            {% if m.tipo == 'Empresa' %}badge-empresa
+                            {% elif m.tipo == 'Emprendimiento' %}badge-emprendimiento
+                            {% else %}badge-personal{% endif %}">
+            {{ m.tipo }}
+        </span>
+    </td>
+    <td>{{ m.nombre_completo }}</td>
+    <td>{{ m.correo_electronico }}</td>
+    <td>
+        <a href="{{ url_for('editar_marcador', id=m.idmarker) }}" class="btn-accion">
+            <i class="fas fa-edit"></i> Editar
+        </a>
+        <a href="{{ url_for('eliminar_marcador', id=m.idmarker) }}" class="btn-accion btn-eliminar"
+            onclick="return confirm('¿Seguro que deseas eliminar este marcador?');">
+            <i class="fas fa-trash"></i> Eliminar
+        </a>
+    </td>
+</tr>
+{% endfor %}

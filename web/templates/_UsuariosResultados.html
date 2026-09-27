@@ -1,0 +1,22 @@
+{% for u in resultadosUsuarios %}
+<tr>
+    <td>{{ u.iduser }}</td>
+    <td>{{ u.correo_electronico }}</td>
+    <td>{{ u.nombre_completo }}</td>
+    <td>{{ u.telefono }}</td>
+    <td>
+        <span class="badge {% if u.rol == 'admin' %}badge-admin{% else %}badge-usuario{% endif %}">
+            {{ u.rol }}
+        </span>
+    </td>
+    <td>
+        <a href="{{ url_for('editar_usuario', id=u.iduser) }}" class="btn-accion">
+            <i class="fas fa-edit"></i> Editar
+        </a>
+        <a href="{{ url_for('eliminar_usuario', id=u.iduser) }}" class="btn-accion btn-eliminar"
+            onclick="return confirm('¿Seguro que deseas eliminar este usuario?');">
+            <i class="fas fa-trash"></i> Eliminar
+        </a>
+    </td>
+</tr>
+{% endfor %}

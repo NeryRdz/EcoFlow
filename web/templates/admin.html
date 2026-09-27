@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Ecoflow</title>
+    <link rel="icon" type="image/png" href="static/images/Logo.ico">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #11ad1e;
+            --primary-dark: #05571a;
+            --primary-light: #46d334;
+            --secondary: #3bf6b8;
+            --accent: #f5d20b;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --gray: #6b7280;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e8f5e8 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 20px rgba(17, 173, 30, 0.15);
+            border-bottom: 2px solid rgba(17, 173, 30, 0.2);
+        }
+
+        .navdiv {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo a {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Botón Volver */
+        .btn-volver {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(17, 173, 30, 0.3);
+            margin: 1rem 2rem;
+        }
+
+        .btn-volver:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(17, 173, 30, 0.4);
+        }
+
+        /* Panel de Administración */
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .admin-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .admin-subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        /* Tarjetas de Administración */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .admin-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(17, 173, 30, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(17, 173, 30, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .admin-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(17, 173, 30, 0.15);
+            border-color: var(--primary-light);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .card-description {
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .btn-admin {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(17, 173, 30, 0.3);
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-admin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(17, 173, 30, 0.4);
+            background: var(--gradient);
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--dark) 0%, #0f172a 100%);
+            color: white;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 4px solid var(--primary);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .footer-logo i {
+            color: var(--primary-light);
+        }
+
+        .footer-bottom {
+            padding-top: 1rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+            margin-top: 1rem;
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Mensajes Flash */
+        .flash-messages {
+            max-width: 1200px;
+            margin: 1rem auto;
+            padding: 0 2rem;
+        }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .alert-success {
+            background: rgba(17, 173, 30, 0.1);
+            color: var(--primary-dark);
+            border: 1px solid var(--primary);
+        }
+
+        .alert-error {
+            background: rgba(220, 53, 69, 0.1);
+            color: #721c24;
+            border: 1px solid #dc3545;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* Tablets */
+        @media (max-width: 1024px) {
+            .admin-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .admin-container {
+                padding: 0 1.5rem;
+            }
+        }
+
+        /* Móviles grandes */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .logo a {
+                font-size: 1.5rem;
+            }
+            
+            .btn-volver {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+                justify-content: center;
+            }
+            
+            .admin-container {
+                padding: 0 1rem;
+                margin: 1rem auto;
+            }
+            
+            .admin-header {
+                margin-bottom: 2rem;
+            }
+            
+            .admin-title {
+                font-size: 2rem;
+            }
+            
+            .admin-subtitle {
+                font-size: 1rem;
+            }
+            
+            .admin-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+            
+            .admin-card {
+                padding: 2rem;
+            }
+            
+            .card-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+            
+            .footer {
+                margin-top: 3rem;
+                padding: 1.5rem;
+            }
+            
+            .flash-messages {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Móviles pequeños */
+        @media (max-width: 480px) {
+            .admin-title {
+                font-size: 1.7rem;
+            }
+            
+            .admin-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .admin-card {
+                padding: 1.5rem;
+            }
+            
+            .card-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            .card-description {
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .btn-admin {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .footer-logo {
+                font-size: 1.3rem;
+            }
+            
+            .footer-bottom {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navdiv">
+            <div class="logo">
+                <a href="#"><i class="fas fa-leaf"></i> Ecoflow</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mensajes Flash -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} fade-in">
+                        <i class="fas fa-{% if category == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Botón Volver -->
+    <a href="{{ url_for('index') }}" class="btn-volver fade-in">
+        <i class="fas fa-arrow-left"></i> Volver al Inicio
+    </a>
+
+    <!-- Panel de Administración -->
+    <div class="admin-container">
+        <div class="admin-header fade-in">
+            <h1 class="admin-title">Panel de Administración</h1>
+            <p class="admin-subtitle">Gestiona y supervisa todos los aspectos de la plataforma Ecoflow</p>
+        </div>
+
+        <div class="admin-grid">
+            <!-- Tarjeta de Gestión de Usuarios -->
+            <div class="admin-card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="card-title">Gestión de Usuarios</h3>
+                <p class="card-description">
+                    Administra todos los usuarios registrados. Crea nuevos usuarios, edita roles y elimina cuentas según sea necesario.
+                </p>
+                <a href="{{ url_for('usuarios') }}" class="btn-admin">
+                    <i class="fas fa-cog"></i> Gestionar Usuarios
+                </a>
+            </div>
+
+            <!-- Tarjeta de Gestión de Marcadores -->
+            <div class="admin-card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3 class="card-title">Gestión de Marcadores</h3>
+                <p class="card-description">
+                    Supervisa y gestiona todos los marcadores del mapa. Modifica ubicaciones, verifica información y mantén el mapa actualizado.
+                </p>
+                <a href="{{ url_for('tablaMarcadores') }}" class="btn-admin">
+                    <i class="fas fa-map"></i> Gestionar Marcadores
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-leaf"></i> Ecoflow
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ecoflow. Panel de Administración. <span style="color: var(--primary-light);">♻️ Gestionando un futuro sostenible</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animación al cargar la página
+        document.addEventListener("DOMContentLoaded", function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.2}s`;
+            });
+        });
+
+        // Efecto hover mejorado para tarjetas
+        document.querySelectorAll('.admin-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
