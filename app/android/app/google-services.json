@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "458475264666",
+    "project_id": "ecoflow-fc41c",
+    "storage_bucket": "ecoflow-fc41c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458475264666:android:c45ac7e1a3a15c1ffa5d23",
+        "android_client_info": {
+          "package_name": "com.example.ecoflowapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3nLIS3eSNzKETP-qequS61D3h3x68ld0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
